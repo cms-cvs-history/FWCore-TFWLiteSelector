@@ -12,18 +12,19 @@ using namespace std;
 
 using namespace tfwliteselectortest;
 
+static const char* kA = "a";
+static const char* kRefA = "refA";
 void ThingsTSelector::begin(TList*&)
 {
 }
 
 void ThingsTSelector::preProcessing(const TList*, TList& out ) {
-  cout << "begin" << endl;
   if(0!=h_a) {
      out.Remove(h_a);
      delete h_a;
      h_a=0;
   }
-  h_a  = new TH1F( "a" , "a"  , 100,  0, 20 );
+  h_a  = new TH1F( kA , "a"  , 100,  0, 20 );
   out.Add(h_a);
 
   if(0!=h_refA) {
@@ -31,7 +32,7 @@ void ThingsTSelector::preProcessing(const TList*, TList& out ) {
      delete h_refA;
      h_refA=0;
   }
-  h_refA  = new TH1F( "refA" , "refA"  , 100,  0, 20 );
+  h_refA  = new TH1F( kRefA , "refA"  , 100,  0, 20 );
   out.Add(h_refA);
 }
 
@@ -68,9 +69,23 @@ void ThingsTSelector::postProcessing(TList&)
 void ThingsTSelector::terminate(TList& out) {
   cout << "terminate" << endl;
   TCanvas * canvas = new TCanvas( );
-  out.FindObject("a")->Draw();
-  canvas->SaveAs( "a.jpg" );
-  out.FindObject("refA")->Draw();
-  canvas->SaveAs( "refA.jpg" );
+  {
+     TObject* hist = out.FindObject(kA);
+     if(0 != hist) {
+	hist->Draw();
+	canvas->SaveAs( "a.jpg" );
+     } else {
+	cout <<"no '"<<kA<<"' histogram"<<endl;
+     }
+  }
+  {
+     TObject* hist = out.FindObject(kRefA);
+     if(0 != hist) {
+	hist->Draw();
+	canvas->SaveAs( "refA.jpg" );
+     } else {
+	cout <<"no '"<<kRefA<<"' histogram"<<endl;
+     }
+  }
   delete canvas;
 }

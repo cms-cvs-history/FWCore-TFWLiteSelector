@@ -16,34 +16,21 @@ using namespace tfwliteselectortest;
 static const char* kA = "a";
 static const char* kRefA = "refA";
 
-void ThingsTSelector2::begin(TList*&)
-{
-}
-
-void ThingsTSelector2::terminate(TList& out) {
-  cout << "terminate" << endl;
-  TCanvas * canvas = new TCanvas( );
-  out.FindObject(kA)->Draw();
-  canvas->SaveAs( "a.jpg" );
-  out.FindObject(kRefA)->Draw();
-  canvas->SaveAs( "refA.jpg" );
-  delete canvas;
-}
 
 
-class ThingsWorker {
-  ThingsWorker(const TList*, TList& out ) {
+ThingsWorker::ThingsWorker(const TList*, TList& out ) {
     cout << "begin" << endl;
     h_a  = new TH1F( kA , "a"  , 100,  0, 20 );
     out.Add(h_a);
     
-    h_refA  = new TH1F( kA , "refA"  , 100,  0, 20 );
+    h_refA  = new TH1F( kRefA , "refA"  , 100,  0, 20 );
     out.Add(h_refA);
-  }
+}
   
   
   
-  void process( const edm::Event& iEvent ) {
+void 
+ThingsWorker::process( const edm::Event& iEvent ) {
     cout << "processing event " << endl;
     //  chain->GetEntry( entry );
     using namespace edmtest;
@@ -69,7 +56,40 @@ class ThingsWorker {
     
   }
   
-  void postProcessing(TList&)
+void 
+ThingsWorker::postProcess(TList&)
+{
+}
+
+
+
+void ThingsTSelector2::begin(TList*&)
+{
+}
+
+void ThingsTSelector2::terminate(TList& out) {
+  cout << "terminate" << endl;
+  TCanvas * canvas = new TCanvas( );
   {
+     TObject* hist = out.FindObject(kA);
+     if(0!=hist) {
+	hist->Draw();
+	canvas->SaveAs( "a.jpg" );
+     } else {
+	cout <<"no '"<<kA<<"' histogram"<<endl;
+     }
   }
-};
+  cout <<"refA"<<endl;
+  {
+     TObject* hist = out.FindObject(kRefA);
+     if( 0 != hist ) {
+	hist->Draw();
+	canvas->SaveAs( "refA.jpg" );
+     } else {
+	cout <<"no '"<<kRefA<<"' histogram"<<endl;
+     }
+  }
+  delete canvas;
+}
+
+

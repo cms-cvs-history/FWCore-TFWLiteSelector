@@ -7,7 +7,7 @@
  *
  * \author Luca Lista, INFN
  *
- * $Id: ThingsTSelector2.h,v 1.1 2006/07/06 18:00:39 chrjones Exp $
+ * $Id: ThingsTSelector2.h,v 1.1 2006/07/06 18:24:59 chrjones Exp $
  */
 #include <TROOT.h>
 #include <TChain.h>
@@ -17,11 +17,17 @@
 #include "FWCore/TFWLiteSelector/interface/TFWLiteSelector.h"
 
 namespace tfwliteselectortest {
-  class ThingsWorker;
+  struct ThingsWorker {
+	ThingsWorker(const TList*, TList&);
+	void process( const edm::Event& iEvent );
+	void postProcess(TList&);
+	TH1F* h_a;
+	TH1F* h_refA;
+  };
 
   class ThingsTSelector2 : public TFWLiteSelector<ThingsWorker> {
 public :
-    ThingsTSelector2() : h_a(0), h_refA(0) {}
+    ThingsTSelector2() {}
     void begin(TList*&);
     void terminate(TList&);
     
