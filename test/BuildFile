@@ -2,7 +2,7 @@
 <use name=DataFormats/Common>
 <use name=FWCore/TFWLiteSelector>
 <use name=root>
-<library file=ThingsTSelector.cc name=FWCoreTFWLiteSelectorTest>
+<library file=ThingsTSelector.cc,ThingsTSelector2.cc name=FWCoreTFWLiteSelectorTest>
   <use name=DataFormats/TestObjects>
   <use name=DataFormats/Common>
   <use name=root>
