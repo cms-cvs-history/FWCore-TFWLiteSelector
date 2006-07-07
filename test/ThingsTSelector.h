@@ -7,13 +7,9 @@
  *
  * \author Luca Lista, INFN
  *
- * $Id: ThingsTSelector.h,v 1.1 2006/06/27 09:53:33 llista Exp $
+ * $Id: ThingsTSelector.h,v 1.1 2006/07/06 18:00:39 chrjones Exp $
  */
-#include <TROOT.h>
-#include <TChain.h>
-#include <TFile.h>
 #include <TH1.h>
-#include <TSelector.h>
 #include "FWCore/TFWLiteSelector/interface/TFWLiteSelectorBasic.h"
 
 namespace tfwliteselectortest {
