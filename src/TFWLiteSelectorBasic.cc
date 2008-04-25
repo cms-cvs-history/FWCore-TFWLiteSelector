@@ -8,7 +8,7 @@
 //
 // Original Author:  Chris Jones
 //         Created:  Tue Jun 27 17:58:10 EDT 2006
-// $Id: TFWLiteSelectorBasic.cc,v 1.36 2008/02/06 06:24:46 wmtan Exp $
+// $Id: TFWLiteSelectorBasic.cc,v 1.37 2008/03/20 15:10:33 chrjones Exp $
 //
 
 // system include files
@@ -56,7 +56,7 @@ namespace edm {
       void set(boost::shared_ptr<const edm::ProductRegistry> iReg) { reg_ = iReg;}
      private:
       virtual std::auto_ptr<EDProduct> getProduct_(BranchKey const& k, EDProductGetter const* ep) const;
-      virtual std::auto_ptr<EntryDescription> getProvenance_(BranchKey const&) const {
+      virtual std::auto_ptr<EntryDescription> getProvenance_(BranchDescription const&) const {
         return std::auto_ptr<EntryDescription>();
       }
       Long64_t entry_;
