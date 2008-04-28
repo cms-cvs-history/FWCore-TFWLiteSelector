@@ -8,7 +8,7 @@
 //
 // Original Author:  Chris Jones
 //         Created:  Tue Jun 27 17:58:10 EDT 2006
-// $Id: TFWLiteSelectorBasic.cc,v 1.37 2008/03/20 15:10:33 chrjones Exp $
+// $Id: TFWLiteSelectorBasic.cc,v 1.37.2.1 2008/04/25 17:19:57 wmtan Exp $
 //
 
 // system include files
@@ -301,7 +301,6 @@ TFWLiteSelectorBasic::Process(Long64_t iEntry) {
 	 std::map<ProductID, BranchDescription>::iterator pitEnd = m_->productMap_.end();
 	 for (; pit != pitEnd; ++pit) {
 	    BranchDescription &product = pit->second;
-            if (not product.productID_.isValid()) continue;
 	    ep.addGroup(edm::ConstBranchDescription(product), productstatus::present());
 	 }
 
