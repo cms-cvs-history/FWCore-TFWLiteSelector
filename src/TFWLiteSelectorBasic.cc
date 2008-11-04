@@ -8,7 +8,7 @@
 //
 // Original Author:  Chris Jones
 //         Created:  Tue Jun 27 17:58:10 EDT 2006
-// $Id: TFWLiteSelectorBasic.cc,v 1.40 2008/07/03 04:23:10 wmtan Exp $
+// $Id: TFWLiteSelectorBasic.cc,v 1.41 2008/08/22 01:40:30 wmtan Exp $
 //
 
 // system include files
@@ -274,16 +274,15 @@ TFWLiteSelectorBasic::Process(Long64_t iEntry) {
 //	 std::cout <<"  "<<*itName<< std::endl;
       //     }
 
-      edm::History history;
+      boost::shared_ptr<edm::History> history(new edm::History);
       if (m_->fileFormatVersion_.value_ >= 7) {
-         edm::History* pHistory = &history;
+         edm::History* pHistory = history.get();
          TBranch* eventHistoryBranch = m_->eventHistoryTree_->GetBranch(edm::poolNames::eventHistoryBranchName().c_str());
          if (!eventHistoryBranch)
             throw edm::Exception(edm::errors::FatalRootError)
             << "Failed to find history branch in event history tree";
          eventHistoryBranch->SetAddress(&pHistory);
          m_->eventHistoryTree_->GetEntry(iEntry);
-         aux.processHistoryID_ = history.processHistoryID();
       }
       try {
 	 m_->reader_->setEntry(iEntry);
@@ -296,9 +295,8 @@ TFWLiteSelectorBasic::Process(Long64_t iEntry) {
 	    new edm::LuminosityBlockPrincipal(lumiAux, reg, pc));
 	 lbp->setRunPrincipal(rp);
 	 boost::shared_ptr<edm::BranchMapper> mapper(new edm::BranchMapper);
-	 edm::EventPrincipal ep(aux, reg, pc, aux.processHistoryID(), mapper, m_->reader_);
+	 edm::EventPrincipal ep(aux, reg, pc, history, mapper, m_->reader_);
 	 ep.setLuminosityBlockPrincipal(lbp);
-         ep.setHistory(history);
          m_->processNames_ = ep.processHistory();
 
 	 using namespace edm;
