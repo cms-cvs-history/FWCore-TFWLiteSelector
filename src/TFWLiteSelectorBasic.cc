@@ -8,7 +8,7 @@
 //
 // Original Author:  Chris Jones
 //         Created:  Tue Jun 27 17:58:10 EDT 2006
-// $Id: TFWLiteSelectorBasic.cc,v 1.41.2.1 2008/11/04 19:26:40 wmtan Exp $
+// $Id: TFWLiteSelectorBasic.cc,v 1.41.2.2 2008/11/08 17:00:01 wmtan Exp $
 //
 
 // system include files
@@ -352,8 +352,8 @@ TFWLiteSelectorBasic::setupNewFile(TFile& iFile) {
   TTree* metaDataTree = dynamic_cast<TTree*>(iFile.Get(edm::poolNames::metaDataTreeName().c_str()) );
   if ( 0 != metaDataTree) {
     metaDataTree->SetBranchAddress(edm::poolNames::productDescriptionBranchName().c_str(), &(pReg) );
-    metaDataTree->SetBranchAddress(edm::poolNames::parameterSetBranchName().c_str(), &psetMapPtr);
-    metaDataTree->SetBranchAddress(edm::poolNames::processHistoryBranchName().c_str(), &pHistMapPtr);
+    metaDataTree->SetBranchAddress(edm::poolNames::parameterSetMapBranchName().c_str(), &psetMapPtr);
+    metaDataTree->SetBranchAddress(edm::poolNames::processHistoryMapBranchName().c_str(), &pHistMapPtr);
     metaDataTree->SetBranchAddress(edm::poolNames::moduleDescriptionBranchName().c_str(), &mdMapPtr);
      metaDataTree->SetBranchAddress(edm::poolNames::fileFormatVersionBranchName().c_str(), &fftPtr);
     metaDataTree->GetEntry(0);
@@ -374,17 +374,17 @@ TFWLiteSelectorBasic::setupNewFile(TFile& iFile) {
   edm::pset::Registry& psetRegistry = *edm::pset::Registry::instance();
   for (PsetMap::const_iterator i = psetMap.begin(), iEnd = psetMap.end();
       i != iEnd; ++i) {
-    psetRegistry.registryPut(edm::ParameterSet(i->second.pset_));
+    psetRegistry.insertMapped(edm::ParameterSet(i->second.pset_));
   } 
   edm::ProcessHistoryRegistry & processNameListRegistry = *edm::ProcessHistoryRegistry::instance();
   for (edm::ProcessHistoryMap::const_iterator j = pHistMap.begin(), jEnd = pHistMap.end();
       j != jEnd; ++j) {
-    processNameListRegistry.registryPut(j->second);
+    processNameListRegistry.insertMapped(j->second);
   } 
   edm::ModuleDescriptionRegistry & moduleDescriptionRegistry = *edm::ModuleDescriptionRegistry::instance();
   for (edm::ModuleDescriptionMap::const_iterator k = mdMap.begin(), kEnd = mdMap.end();
       k != kEnd; ++k) {
-    moduleDescriptionRegistry.registryPut(k->second);
+    moduleDescriptionRegistry.insertMapped(k->second);
   } 
   
   m_->productMap_.erase(m_->productMap_.begin(),m_->productMap_.end());
