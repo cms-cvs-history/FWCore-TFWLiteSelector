@@ -8,7 +8,7 @@
 //
 // Original Author:  Chris Jones
 //         Created:  Tue Jun 27 17:58:10 EDT 2006
-// $Id: TFWLiteSelectorBasic.cc,v 1.41.2.2 2008/11/08 17:00:01 wmtan Exp $
+// $Id: TFWLiteSelectorBasic.cc,v 1.41.2.3 2008/11/10 19:37:14 wmtan Exp $
 //
 
 // system include files
@@ -27,6 +27,7 @@
 #include "DataFormats/Provenance/interface/ProductRegistry.h"
 #include "DataFormats/Provenance/interface/ConstBranchDescription.h"
 #include "DataFormats/Provenance/interface/EventAuxiliary.h"
+#include "DataFormats/Provenance/interface/EventEntryDescription.h" // kludge to allow compilation
 #include "DataFormats/Provenance/interface/LuminosityBlockAuxiliary.h"
 #include "DataFormats/Provenance/interface/RunAuxiliary.h"
 #include "DataFormats/Provenance/interface/FileFormatVersion.h"
@@ -354,7 +355,7 @@ TFWLiteSelectorBasic::setupNewFile(TFile& iFile) {
     metaDataTree->SetBranchAddress(edm::poolNames::productDescriptionBranchName().c_str(), &(pReg) );
     metaDataTree->SetBranchAddress(edm::poolNames::parameterSetMapBranchName().c_str(), &psetMapPtr);
     metaDataTree->SetBranchAddress(edm::poolNames::processHistoryMapBranchName().c_str(), &pHistMapPtr);
-    metaDataTree->SetBranchAddress(edm::poolNames::moduleDescriptionBranchName().c_str(), &mdMapPtr);
+    // metaDataTree->SetBranchAddress(edm::poolNames::moduleDescriptionBranchName().c_str(), &mdMapPtr); // kludge to compile
      metaDataTree->SetBranchAddress(edm::poolNames::fileFormatVersionBranchName().c_str(), &fftPtr);
     metaDataTree->GetEntry(0);
     m_->reg_->setFrozen();
